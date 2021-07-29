@@ -12,11 +12,12 @@ public class DBConnector {
     private DBConnector(){
 
         try{
-            instance = DriverManager.getConnection("jdbc:mysql://localhost:3306/crs","root","43061186");
+            Class.forName("com.mysql.jdbc.Driver");
+            instance = DriverManager.getConnection("jdbc:mysql://localhost:3306/crs","root","root1234");
             System.out.println("Connected!");
 
         }
-        catch (SQLException ex){
+        catch (SQLException | ClassNotFoundException ex){
             ex.printStackTrace();
             System.exit(0);
         }

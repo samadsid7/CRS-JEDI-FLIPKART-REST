@@ -2,29 +2,34 @@ package com.flipkart.client;
 
 
 import com.flipkart.bean.Professor;
+import com.flipkart.dao.StudentDaoOperation;
 
+import javax.validation.ValidationException;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.List;
 
 
 @Path("/professors")
 public class ProfessorRESTAPIController {
 
+
+    StudentDaoOperation st=new StudentDaoOperation();
+
     @GET
-    @Path("/professorDetails")
+    @Path("/courses/{studentId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Professor getProfessorDetails() {
+    public List<String> viewRegisteredCourse(
+            @NotNull
+            @QueryParam("studentId") String studentId) throws ValidationException {
 
-        //  client --- service ---- dao ----> SQL
-
-        Professor professor=new Professor();
-        professor.setId("101");
-        professor.setName("Amit");
-
-        return professor;
+        return st.viewEnrolledCourses(studentId);
     }
-
     @POST
     @Path("/post")
     @Consumes("application/json")
@@ -40,6 +45,7 @@ public class ProfessorRESTAPIController {
 
 
         return Response.status(201).entity(result).build();
+
 
     }
 }

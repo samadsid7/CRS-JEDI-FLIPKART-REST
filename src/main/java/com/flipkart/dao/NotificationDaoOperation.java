@@ -18,6 +18,7 @@ import java.util.UUID;
 
 public class NotificationDaoOperation implements NotificationDaoInterface{
     private final Connection conn;
+    String Uid;
     private static Logger logger = Logger.getLogger(NotificationDaoOperation.class);
     public NotificationDaoOperation(){
         conn = DBConnector.getInstance();
@@ -32,7 +33,7 @@ public class NotificationDaoOperation implements NotificationDaoInterface{
      */
 
     @Override
-    public void sendNotification(String studentId, String mode)
+    public String sendNotification(String studentId, String mode)
     {
         final String sql = "INSERT INTO notification values (? , ? , ? , ? , ?)";
         try {
@@ -45,11 +46,13 @@ public class NotificationDaoOperation implements NotificationDaoInterface{
             String uid=uniqueKey.toString();
             stmt.setString(5,uid);
             stmt.executeUpdate();
+            Uid=uid;
             logger.info("******* Payment Succesfully completed. ******");
             logger.info("****** Transaction Id is "+uid+" ********");
         }
         catch (SQLException e){
             e.printStackTrace();
         }
+        return Uid;
     }
 }

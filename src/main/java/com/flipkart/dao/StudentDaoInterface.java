@@ -12,7 +12,7 @@ public interface StudentDaoInterface {
      * @param studentId
      * @throws SQLException
      */
-    void viewEnrolledCourses(String studentId);
+    List<String> viewEnrolledCourses(String studentId);
     /**
      * Method to add course in database
      * @param courseCode : code for selected course

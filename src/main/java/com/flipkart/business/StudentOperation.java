@@ -34,7 +34,7 @@ public class StudentOperation implements StudentOperationInterface {
     @Override
     public void viewEnrolledCourses() {
         StudentDaoOperation operation=new StudentDaoOperation();
-        operation.viewEnrolledCourses(student.getId());
+        List<String> ans=operation.viewEnrolledCourses(student.getId());
     }
     /**
      * Method to add course corresponding to student

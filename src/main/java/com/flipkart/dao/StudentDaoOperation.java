@@ -32,8 +32,9 @@ public class StudentDaoOperation implements StudentDaoInterface {
      * @throws SQLException
      */
 
-    public void viewEnrolledCourses(String studentId)
+    public List<String> viewEnrolledCourses(String studentId)
     {
+        List<String> ans= new ArrayList<>();
         try{
             stmt = conn.prepareStatement(SQLQueriesConstant.VIEW_ENROLLED_COURSES);
             stmt.setString(1 , studentId);
@@ -44,12 +45,15 @@ public class StudentDaoOperation implements StudentDaoInterface {
                 String course_name = rs.getString("courseName");
                 String courseId = rs.getString("courseCode");
                 System.out.println(course_name + "          " + courseId);
-            }
 
+                ans.add(course_name);
+
+            }
         }
         catch (SQLException ex){
             ex.printStackTrace();
         }
+        return ans;
 
     }
 
@@ -190,7 +194,7 @@ public class StudentDaoOperation implements StudentDaoInterface {
                 System.out.println("******* 1. Debit / Credit Card *********");
                 System.out.println("******* 2. Netbanking ***********");
                 System.out.println("******** 3. UPI ***********");
-                String modeP[]={"Debit/Credit","NetBanking","UPI"};
+                String modeP[]={"Debit/Credit","netBanking","UPI"};
                 Integer i = Helper.scanInt();
                 switch(i) {
                     case 1:  String cardNumber = Helper.scanString("Card Number ");
@@ -212,7 +216,7 @@ public class StudentDaoOperation implements StudentDaoInterface {
 
                 stmt.executeUpdate();
                 NotificationDaoOperation notificationDaoOperation=new NotificationDaoOperation();
-                notificationDaoOperation.sendNotification(studentId,modeP[i-1]);
+                String transactionId=notificationDaoOperation.sendNotification(studentId,modeP[i-1]);
             }
         }
         catch (SQLException ex){
@@ -245,7 +249,7 @@ public class StudentDaoOperation implements StudentDaoInterface {
      * Method to check if the fees has already been paid
      * @param studentId
      */
-    private boolean checkFeeAlreadyPaid(String studentId){
+    public boolean checkFeeAlreadyPaid(String studentId){
 
         Connection conn = DBConnector.getInstance();
 

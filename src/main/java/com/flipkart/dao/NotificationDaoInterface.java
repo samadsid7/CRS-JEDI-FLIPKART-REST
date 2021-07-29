@@ -8,5 +8,5 @@ public interface NotificationDaoInterface {
      * @param studentId: student to be notified
      * @param mode: mode of payment used
      */
-    void sendNotification(String studentId,String mode);
+    String sendNotification(String studentId,String mode);
 }
