@@ -1,6 +1,8 @@
 package com.flipkart.dao;
 
 import com.flipkart.bean.Course;
+import com.flipkart.bean.Professor;
+import com.flipkart.constant.Role;
 import com.flipkart.constant.SQLQueriesConstant;
 import com.flipkart.exceptions.CourseAlreadyRegisteredException;
 import com.flipkart.exceptions.CourseNotTaughtException;
@@ -159,7 +161,7 @@ public class ProfessorDaoOperation implements ProfessorDaoInterface {
     public void chooseCourse(String profId , String courseCode) throws CourseAlreadyRegisteredException {
 
         Connection conn = DBConnector.getInstance();
-        if( checkIfSignedUp(profId , courseCode))
+        if(checkIfSignedUp(profId , courseCode))
             throw new CourseAlreadyRegisteredException(courseCode);
 
         final String sql = "INSERT INTO instructor values (? , ?)";
@@ -167,7 +169,7 @@ public class ProfessorDaoOperation implements ProfessorDaoInterface {
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1 , profId);
             stmt.setString(2 , courseCode);
-            stmt.executeQuery();
+            stmt.executeUpdate();
             System.out.println("Course added successfully .");
         }
         catch (SQLException e){
@@ -248,6 +250,36 @@ public class ProfessorDaoOperation implements ProfessorDaoInterface {
             ex.printStackTrace();
         }
         return false;
+    }
+
+    public static Professor getProfessorDetails(String profId){
+
+        Connection conn = DBConnector.getInstance();
+        try{
+            final String sql = "SELECT * FROM users join professor on users.userId = professor.profId where users.userId = ?";
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1 , profId);
+            ResultSet rs = stmt.executeQuery();
+            if(rs.next()){
+                String id = rs.getString("userId");
+                String name = rs.getString("name");
+                String department = rs.getString("department");
+                String designation = rs.getString("designation");
+
+                Professor professor = new Professor();
+                professor.setId(id);
+                professor.setName(name);
+                professor.setRole(Role.PROF);
+                professor.setDesignation(designation);
+                professor.setDepartment(department);
+                return professor;
+            }
+
+        }catch (SQLException ex){
+            ex.printStackTrace();
+        }
+        return null;
+
     }
 
     public static void main(String[] args) throws GradesAlreadyGivenException {

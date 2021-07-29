@@ -3,6 +3,8 @@ package com.flipkart.business;
 import com.flipkart.exceptions.CourseAlreadyRegisteredException;
 import com.flipkart.exceptions.CourseNotTaughtException;
 
+import java.util.ArrayList;
+
 /**
  * @author JEDI-06-group-4
  *Interface to implement Professor Operations
@@ -29,12 +31,12 @@ public interface ProfessorOperationInterface {
     public void chooseCourse(String courseCode) throws CourseAlreadyRegisteredException;
 
     /**
-     * Method to view list of enrolled Students 
+     * Method to view list of enrolled Students
      * @param: courseCode: course code of the professor
      * @return: void
      * @throws CourseNotTaughtException
      */
-    public void viewEnrolledStudent(String courseCode);
+    public ArrayList<ArrayList<String>> viewEnrolledStudent(String courseCode);
 
     /**
      * Method to get Courses by Professor Id
