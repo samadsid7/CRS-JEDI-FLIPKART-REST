@@ -19,17 +19,7 @@ import java.util.List;
 public class ProfessorRESTAPIController {
 
 
-    StudentDaoOperation st=new StudentDaoOperation();
 
-    @GET
-    @Path("/courses/{studentId}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public List<String> viewRegisteredCourse(
-            @NotNull
-            @QueryParam("studentId") String studentId) throws ValidationException {
-
-        return st.viewEnrolledCourses(studentId);
-    }
     @POST
     @Path("/post")
     @Consumes("application/json")

@@ -4,6 +4,7 @@
 
 package com.flipkart.business;
 
+import com.flipkart.bean.Course;
 import com.flipkart.bean.Student;
 import com.flipkart.bean.StudentGrade;
 import com.flipkart.dao.CatalogDaoOperation;
@@ -34,7 +35,7 @@ public class StudentOperation implements StudentOperationInterface {
     @Override
     public void viewEnrolledCourses() {
         StudentDaoOperation operation=new StudentDaoOperation();
-        List<String> ans=operation.viewEnrolledCourses(student.getId());
+        List<Course> ans=operation.viewEnrolledCourses(student.getId());
     }
     /**
      * Method to add course corresponding to student

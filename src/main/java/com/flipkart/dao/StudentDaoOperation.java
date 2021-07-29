@@ -4,6 +4,7 @@
  */
 package com.flipkart.dao;
 
+import com.flipkart.bean.Course;
 import com.flipkart.bean.StudentGrade;
 import com.flipkart.constant.SQLQueriesConstant;
 import com.flipkart.exceptions.RegistrationNotCompleteException;
@@ -32,9 +33,9 @@ public class StudentDaoOperation implements StudentDaoInterface {
      * @throws SQLException
      */
 
-    public List<String> viewEnrolledCourses(String studentId)
+    public List<Course> viewEnrolledCourses(String studentId)
     {
-        List<String> ans= new ArrayList<>();
+        List<Course> ans= new ArrayList<>();
         try{
             stmt = conn.prepareStatement(SQLQueriesConstant.VIEW_ENROLLED_COURSES);
             stmt.setString(1 , studentId);
@@ -44,9 +45,12 @@ public class StudentDaoOperation implements StudentDaoInterface {
             while(rs.next()){
                 String course_name = rs.getString("courseName");
                 String courseId = rs.getString("courseCode");
-                System.out.println(course_name + "          " + courseId);
+                String description = rs.getString("description");
+                int seats=rs.getInt("seats");
+                Course course=new Course(courseId,course_name,seats,description);
 
-                ans.add(course_name);
+
+                ans.add(course);
 
             }
         }

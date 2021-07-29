@@ -1,5 +1,6 @@
 package com.flipkart.dao;
 
+import com.flipkart.bean.Course;
 import com.flipkart.bean.StudentGrade;
 import com.flipkart.exceptions.RegistrationNotCompleteException;
 
@@ -12,7 +13,7 @@ public interface StudentDaoInterface {
      * @param studentId
      * @throws SQLException
      */
-    List<String> viewEnrolledCourses(String studentId);
+    List<Course> viewEnrolledCourses(String studentId);
     /**
      * Method to add course in database
      * @param courseCode : code for selected course

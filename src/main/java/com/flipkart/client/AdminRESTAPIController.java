@@ -1,3 +1,9 @@
+
+/**
+ * @author JEDI-06
+ * Application Class for Admin
+ */
+
 package com.flipkart.client;
 
 import com.flipkart.bean.Admin;
@@ -10,8 +16,16 @@ import com.flipkart.exceptions.*;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+
+
 @Path("/admin")
 public class AdminRESTAPIController  {
+    /**
+     * Approve Student using SQL commands
+     * @param studentId
+     * @throws StudentNotFoundException
+     */
     @PUT
     @Path("/approveStudent/{studentId}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -26,6 +40,12 @@ public class AdminRESTAPIController  {
         return Response.status(201).entity("Student with studentId: " + studentId + " approved").build();
     }
 
+
+    /**
+     * Remove Course using SQL commands
+     * @param courseCode
+     * @throws CourseNotFoundException
+     */
     @DELETE
     @Path("/removeCourse/{courseCode}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -41,6 +61,15 @@ public class AdminRESTAPIController  {
             return Response.status(500).entity(e.getMessage()).build();
         }
     }
+
+    /**
+     * Add Course
+     * @param courseCode
+     * @param courseName
+     * @param description
+     * @param seats
+     * @throws CourseFoundException
+     */
     @POST
     @Path("/addCourse/{courseCode}/{courseName}/{description}/{seats}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -57,6 +86,16 @@ public class AdminRESTAPIController  {
         }
     }
 
+
+    /**
+     * Add professor
+     * @param profId
+     * @param department
+     * @param designation
+     * @param Name
+     * @param Password
+     * @throws ProfessorNotAddedException
+     */
     @POST
     @Path("/addProfessor/{profId}/{Name}/{Password}/{designation}/{department}")
     @Produces(MediaType.APPLICATION_JSON)

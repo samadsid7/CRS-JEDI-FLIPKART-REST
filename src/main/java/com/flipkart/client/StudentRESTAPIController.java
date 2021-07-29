@@ -1,5 +1,6 @@
 package com.flipkart.client;
 
+import com.flipkart.bean.Course;
 import com.flipkart.bean.Professor;
 import com.flipkart.bean.StudentGrade;
 import com.flipkart.dao.DBConnector;
@@ -23,6 +24,16 @@ import java.util.List;
 @Path("/student")
 public class StudentRESTAPIController {
     private static Logger logger = Logger.getLogger(StudentRESTAPIController.class);
+
+
+
+    /**
+     * Method to add course in database
+     * @param courseCode : code for selected course
+     * @param studentId : ID of student
+     * @return Response
+     * @throws SQLException
+     */
     @POST
     @Path("/addCourse/{courseCode}/{studentId}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -39,6 +50,16 @@ public class StudentRESTAPIController {
         }
         return Response.status(201).entity("Course successfully added \t"+ courseCode).build();
     }
+
+
+
+    /**
+     * Method to add remove course in database
+     * @param courseCode : code for selected course
+     * @param studentId : ID of student
+     * @return Response
+     * @throws SQLException
+     */
     @DELETE
     @Path("/dropCourse/{studentId}/{courseCode}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -54,6 +75,12 @@ public class StudentRESTAPIController {
             return Response.status(501).entity("You cannot drop the course").build();
         }
     }
+
+    /**
+     * Method to view Grade Card
+     * @param studentId : ID of student
+     * @return List of Students Grade
+     */
     @GET
     @Path("/viewGradeCard/{studentId}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -62,23 +89,50 @@ public class StudentRESTAPIController {
         List<StudentGrade> gradeCard = operation.viewGradeCard(studentId);
         return gradeCard;
     }
+
+    /**
+     * Method to view all the enrolled courses
+     * @param studentId
+     * @throws SQLException
+     */
+
     @GET
     @Path("/viewEnrolledCourses/{studentId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<String> viewEnrolledCourses(@PathParam("studentId") String studentId) throws ValidationException, SQLException {
+    public List<Course> viewEnrolledCourses(@PathParam("studentId") String studentId) throws ValidationException, SQLException {
         StudentDaoOperation operation=new StudentDaoOperation();
-        List<String> enrolledCourses = operation.viewEnrolledCourses(studentId);
+        List<Course> enrolledCourses = operation.viewEnrolledCourses(studentId);
         return enrolledCourses;
     }
+
+    /**
+     * Method to check if the fees has been paid
+     * @param studentId
+     */
+
 
     @GET
     @Path("/checkFeeAlreadyPaid/{studentId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public boolean checkFeeAlreadyPaid(@PathParam("studentId") String studentId) throws ValidationException, SQLException {
+    public Response checkFeeAlreadyPaid(@PathParam("studentId") String studentId) throws ValidationException, SQLException {
         StudentDaoOperation operation=new StudentDaoOperation();
         boolean status= operation.checkFeeAlreadyPaid(studentId);
-        return status;
+        if(status==true)
+            return Response.status(201).entity( "You have already paid the fees" ).build();
+        else
+            return Response.status(500).entity("You need to pay the fees").build();
+
     }
+
+
+    /**
+     * Method to pay fees of the student
+     * @param studentId
+     * @param id
+     * @param mode
+     * @param password
+     * @return Response
+     */
 
     @POST
     @Path("/payFees/{studentId}/{mode}/{id}/{password}")
