@@ -24,9 +24,12 @@ public class ProfessorOperation implements ProfessorOperationInterface {
     public ProfessorOperation(Professor professor){
         this.professor = professor;
     }
+    public ProfessorOperation(){
+
+    }
 
     /**
-     * Method to Grade a student 
+     * Method to Grade a student
      * @param: studentId: student id
      * @param: courseCode: course code for the corresponding
      * @param grade: grade given to student in that course
@@ -44,7 +47,7 @@ public class ProfessorOperation implements ProfessorOperationInterface {
     }
 
     /**
-     * Method to choose course which professor wants to teach 
+     * Method to choose course which professor wants to teach
      * @param: courseCode: course code for the corresponding
      * @return: void
      * @throws CourseAlreadyRegisteredException
@@ -55,15 +58,20 @@ public class ProfessorOperation implements ProfessorOperationInterface {
         ProfessorDaoOperation operation = new ProfessorDaoOperation();
         operation.chooseCourse(professor.getId() , courseCode);
     }
+    public void chooseCourse(String profId , String courseCode) throws CourseAlreadyRegisteredException {
+
+        ProfessorDaoOperation operation = new ProfessorDaoOperation();
+        operation.chooseCourse(profId , courseCode);
+    }
 
     /**
-     * Method to view list of enrolled Students 
+     * Method to view list of enrolled Students
      * @param: courseCode: course code of the professor
      * @return: void
      * @throws CourseNotTaughtException
      */
     @Override
-    public void viewEnrolledStudent(String courseCode) {
+    public ArrayList<ArrayList<String>> viewEnrolledStudent(String courseCode) {
 
         ProfessorDaoOperation operation = new ProfessorDaoOperation();
         try {
@@ -71,14 +79,32 @@ public class ProfessorOperation implements ProfessorOperationInterface {
             logger.trace("============================================================");
             data.forEach(info -> logger.info(info));
             logger.trace("============================================================");
+            return data;
         }
         catch (CourseNotTaughtException ex){
             logger.error(ex.getMessage());
         }
+        return null;
+    }
+
+    public ArrayList<ArrayList<String>> viewEnrolledStudent(String profId , String courseCode) {
+
+        ProfessorDaoOperation operation = new ProfessorDaoOperation();
+        try {
+            ArrayList<ArrayList<String>> data = operation.getEnrolledStudents(profId , courseCode);
+            logger.trace("============================================================");
+            data.forEach(info -> logger.info(info));
+            logger.trace("============================================================");
+            return data;
+        }
+        catch (CourseNotTaughtException ex){
+            logger.error(ex.getMessage());
+        }
+        return null;
     }
 
     /**
-     * Method to get Courses by Professor Id 
+     * Method to get Courses by Professor Id
      * @return void
      */
     @Override
@@ -92,9 +118,19 @@ public class ProfessorOperation implements ProfessorOperationInterface {
         logger.trace("============================================================");
 
     }
+    public ArrayList<Course> viewCourses(String profId){
+
+        ArrayList<Course> enrolledCourses = new ProfessorDaoOperation().getCourseByProf(profId);
+        logger.trace("============================================================");
+        for(Course course : enrolledCourses){
+            logger.info(course.toString());
+        }
+        logger.trace("============================================================");
+        return enrolledCourses;
+    }
 
     /**
-     * Method to get all available courses 
+     * Method to get all available courses
      * @return void
      */
     public void showAllCourses(){
@@ -104,5 +140,20 @@ public class ProfessorOperation implements ProfessorOperationInterface {
         allCourses.forEach(course -> logger.info(course.toString()));
 
         logger.trace("============================================================");
+    }
+
+    public ArrayList<Course> showAllCourses(String profId){
+
+        ArrayList<Course> allCourses = new CatalogDaoOperation().getAllCourses();
+        logger.trace("============================================================");
+        allCourses.forEach(course -> logger.info(course.toString()));
+
+        logger.trace("============================================================");
+
+        return allCourses;
+    }
+    public static Professor getProfessorDetails(String profId){
+
+        return ProfessorDaoOperation.getProfessorDetails(profId);
     }
 }
