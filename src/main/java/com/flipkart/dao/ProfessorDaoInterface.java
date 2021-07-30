@@ -4,6 +4,7 @@ import com.flipkart.bean.Course;
 import com.flipkart.exceptions.CourseAlreadyRegisteredException;
 import com.flipkart.exceptions.CourseNotTaughtException;
 import com.flipkart.exceptions.GradesAlreadyGivenException;
+import com.flipkart.exceptions.UserNotFoundException;
 
 import java.util.ArrayList;
 
@@ -58,5 +59,5 @@ public interface ProfessorDaoInterface {
      * @return: void
      * @throws CourseAlreadyRegisteredException
      */
-    void chooseCourse(String profId , String courseCode) throws CourseAlreadyRegisteredException;
+    void chooseCourse(String profId , String courseCode) throws CourseAlreadyRegisteredException, UserNotFoundException;
 }

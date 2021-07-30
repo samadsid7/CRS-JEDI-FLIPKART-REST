@@ -2,13 +2,17 @@ package com.flipkart.dao;
 
 import com.flipkart.bean.Course;
 import com.flipkart.bean.Professor;
+import com.flipkart.bean.Student;
+import com.flipkart.constant.Role;
 import com.flipkart.constant.SQLQueriesConstant;
 import com.flipkart.exceptions.*;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * @author JEDI-06
@@ -158,5 +162,66 @@ public class AdminDaoOperation implements AdminDaoInterface
         {
             logger.error(ex.getMessage());
         }
+
+    }
+
+    public ArrayList<Student> viewStudent() throws SQLException
+    {
+        ArrayList<Student> students = new ArrayList<>();
+        try
+        {
+            String sql = SQLQueriesConstant.VIEW_STUDENT;
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            ResultSet row = stmt.executeQuery();
+            while (row.next()) {
+                String studentID= row.getString("studentID");
+                String branch= row.getString("branch");
+                String name = row.getString("name");
+
+                Student student = new Student();
+                student.setRole(Role.STUDENT);
+                student.setBranch(branch);
+                student.setId(studentID);
+                student.setName(name);
+                students.add(student);
+            }
+        }
+        catch (SQLException ex)
+        {
+            ex.printStackTrace();
+        }
+        return students;
+    }
+    /**
+     *
+     * @return void
+     * @throws SQLException
+     */
+    public ArrayList<Professor> viewProfessor() throws SQLException {
+        ArrayList<Professor> result = new ArrayList<>();
+        try {
+            String sql = SQLQueriesConstant.VIEW_PROFESSOR;
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            ResultSet row = stmt.executeQuery();
+            while (row.next()) {
+                String profID= row.getString("profId");
+                String department= row.getString("department");
+                String designation=row.getString("designation");
+                String name = row.getString("name");
+//                System.out.println(profID+ "     "+department+"     "+designation);
+                Professor professor = new Professor();
+                professor.setId(profID);
+                professor.setDesignation(designation);
+                professor.setDepartment(department);
+                professor.setName(name);
+                professor.setRole(Role.PROF);
+                result.add(professor);
+
+            }
+        }
+        catch (SQLException ex){
+            ex.printStackTrace();
+        }
+        return result;
     }
 }

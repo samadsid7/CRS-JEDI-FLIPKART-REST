@@ -7,6 +7,7 @@ import com.flipkart.constant.SQLQueriesConstant;
 import com.flipkart.exceptions.CourseAlreadyRegisteredException;
 import com.flipkart.exceptions.CourseNotTaughtException;
 import com.flipkart.exceptions.GradesAlreadyGivenException;
+import com.flipkart.exceptions.UserNotFoundException;
 import org.apache.log4j.Logger;
 
 import java.sql.Connection;
@@ -158,9 +159,12 @@ public class ProfessorDaoOperation implements ProfessorDaoInterface {
      * @throws CourseAlreadyRegisteredException
      */
     @Override
-    public void chooseCourse(String profId , String courseCode) throws CourseAlreadyRegisteredException {
+    public void chooseCourse(String profId , String courseCode) throws CourseAlreadyRegisteredException , UserNotFoundException {
 
         Connection conn = DBConnector.getInstance();
+        if(getProfessorDetails(profId)==null){
+            throw new UserNotFoundException(profId);
+        }
         if(checkIfSignedUp(profId , courseCode))
             throw new CourseAlreadyRegisteredException(courseCode);
 

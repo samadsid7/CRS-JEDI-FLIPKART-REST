@@ -5,6 +5,7 @@ import com.flipkart.bean.Professor;
 import com.flipkart.business.ProfessorOperation;
 import com.flipkart.constant.Role;
 import com.flipkart.exceptions.CourseAlreadyRegisteredException;
+import com.flipkart.exceptions.UserNotFoundException;
 
 import javax.validation.ValidationException;
 import javax.validation.constraints.*;
@@ -92,11 +93,13 @@ public class ProfessorRESTAPIController {
             @QueryParam("profId") String profId) throws ValidationException {
 
         try {
-            new ProfessorOperation().chooseCourse(profId, courseCode);
+            new ProfessorOperation().selectCourse(profId, courseCode);
             return Response.status(200).entity("Course Added").build();
         }catch (CourseAlreadyRegisteredException ex){
 
             return Response.status(200).entity("Course already chosen").build();
+        }catch (UserNotFoundException ex){
+            return Response.status(404).entity(ex.getMessage()).build();
         }
 
     }

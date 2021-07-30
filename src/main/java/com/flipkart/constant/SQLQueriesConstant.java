@@ -39,7 +39,6 @@ public class SQLQueriesConstant {
 
 
 
-
     // Admin
     public static final String UPDATE_STUDENT="update student set isApproved = true where studentID = ?";
     public static final String DELETE_COURSE = "delete from courseCatalog where courseCode = ?";
@@ -47,4 +46,6 @@ public class SQLQueriesConstant {
     public static final String INSERT_USER= "insert into users(userId, name,password, role) values (?, ?, ?, ?)";
 
     public static final String INSERT_COURSE = "insert into courseCatalog(courseCode, courseName, description, seats) values (?, ?, ?, ?)";
+    public static final String VIEW_STUDENT = "select * from Student join users on users.userid = student.studentId";
+    public static final String VIEW_PROFESSOR= "select * from Professor join users on users.userid = Professor.profId";
 }

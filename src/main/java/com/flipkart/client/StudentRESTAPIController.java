@@ -8,6 +8,7 @@ import com.flipkart.dao.NotificationDaoOperation;
 import com.flipkart.dao.StudentDaoOperation;
 import com.flipkart.exceptions.RegistrationNotCompleteException;
 import org.apache.log4j.Logger;
+import org.json.JSONObject;
 
 import javax.validation.ValidationException;
 import javax.validation.constraints.NotNull;
@@ -17,8 +18,8 @@ import javax.ws.rs.core.Response;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
-
 
 
 @Path("/student")
@@ -50,7 +51,6 @@ public class StudentRESTAPIController {
         }
         return Response.status(201).entity("Course successfully added \t"+ courseCode).build();
     }
-
 
 
     /**
@@ -103,6 +103,22 @@ public class StudentRESTAPIController {
         StudentDaoOperation operation=new StudentDaoOperation();
         List<Course> enrolledCourses = operation.viewEnrolledCourses(studentId);
         return enrolledCourses;
+    }
+
+    @POST
+    @Path("/registerCourses")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response registerCourses(String data){
+
+        System.out.println(data);
+        JSONObject jsonData = new JSONObject(data);
+        List<String> courses = Arrays.asList(jsonData.getString("courses").split(","));
+        String studentId = jsonData.getString("studentId");
+        StudentDaoOperation operation = new StudentDaoOperation();
+        for(String courseCode : courses){
+            operation.addSingleCourse(studentId , courseCode);
+        }
+        return Response.status(200).entity("Courses Added").build();
     }
 
     /**

@@ -9,6 +9,7 @@ package com.flipkart.client;
 import com.flipkart.bean.Admin;
 import com.flipkart.bean.Course;
 import com.flipkart.bean.Professor;
+import com.flipkart.bean.Student;
 import com.flipkart.constant.Role;
 import com.flipkart.dao.AdminDaoOperation;
 import com.flipkart.exceptions.*;
@@ -16,7 +17,8 @@ import com.flipkart.exceptions.*;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 
 @Path("/admin")
@@ -115,6 +117,36 @@ public class AdminRESTAPIController  {
             return Response.status(500).entity("Error: User cannot be added in User table").build();
         }
         return Response.status(201).entity(" Professor successfully added ").build();
+    }
+
+    @GET
+    @Path("/viewProfessors")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ArrayList<Professor> viewProfessor() throws SQLException {
+        AdminDaoOperation operation = new AdminDaoOperation();
+        try {
+            return operation.viewProfessor();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    /**
+     * View student
+     *
+     * @throws SQLException
+     */
+    @GET
+    @Path("/viewStudent")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ArrayList<Student> viewStudent() throws SQLException {
+        AdminDaoOperation operation = new AdminDaoOperation();
+        try {
+            return operation.viewStudent();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 }

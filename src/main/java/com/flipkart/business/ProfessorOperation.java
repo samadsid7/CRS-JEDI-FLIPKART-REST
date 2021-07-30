@@ -7,6 +7,7 @@ import com.flipkart.dao.ProfessorDaoOperation;
 import com.flipkart.exceptions.CourseAlreadyRegisteredException;
 import com.flipkart.exceptions.CourseNotTaughtException;
 import com.flipkart.exceptions.GradesAlreadyGivenException;
+import com.flipkart.exceptions.UserNotFoundException;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -55,10 +56,15 @@ public class ProfessorOperation implements ProfessorOperationInterface {
     @Override
     public void chooseCourse(String courseCode) throws CourseAlreadyRegisteredException {
 
-        ProfessorDaoOperation operation = new ProfessorDaoOperation();
-        operation.chooseCourse(professor.getId() , courseCode);
+        try {
+            ProfessorDaoOperation operation = new ProfessorDaoOperation();
+            operation.chooseCourse(professor.getId() , courseCode);
+        }catch (UserNotFoundException ex){
+            ex.printStackTrace();
+        }
+
     }
-    public void chooseCourse(String profId , String courseCode) throws CourseAlreadyRegisteredException {
+    public void selectCourse(String profId , String courseCode) throws CourseAlreadyRegisteredException , UserNotFoundException{
 
         ProfessorDaoOperation operation = new ProfessorDaoOperation();
         operation.chooseCourse(profId , courseCode);
